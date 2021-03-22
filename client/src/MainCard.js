@@ -58,11 +58,17 @@ class Main extends Component {
                     onChange={e => this.change(e)}
                     className="h-7 w-full p-3 text-xs rounded-sm shadow-inner bg-gray-100 border-0 focus:ring-green-500 focus:bg-white"
                 />
-                <p className="pt-3 text-xs font-semibold leading-normal">Purchase Date</p>
-                <DatePicker onChange={date => this.purchaseDateChange(date)}/>
 
-                <p className="pt-3 text-xs font-semibold leading-normal">Sell Date</p>
-                <DatePicker onChange={date => this.sellDateChange(date)}/>
+                <div className="flex flex-row">
+                    <div className="pr-1">
+                        <p className="pt-3 text-xs font-semibold leading-normal">Purchase Date</p>
+                        <DatePicker onChange={date => this.purchaseDateChange(date)}/>
+                    </div>
+                    <div className="pl-1">
+                        <p className="pt-3 text-xs font-semibold leading-normal">Sell Date</p>
+                        <DatePicker onChange={date => this.sellDateChange(date)}/>
+                    </div>
+                </div>
 
                 <p className="pt-3 text-xs font-semibold leading-normal">Amount Invested</p>
                 <input 
