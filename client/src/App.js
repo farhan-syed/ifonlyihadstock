@@ -144,6 +144,14 @@ class App extends Component {
                     </div>
                 </div>
 
+                <div className="flex-none">
+                  <div className="flex flex-col items-center">
+                      {this.state.showError &&
+                        <ErrorCard message={this.state.errorMessage}/>
+                      }
+                  </div>
+                </div>
+
                 {this.state.showResult &&
                 <div className="flex-none">
                     <div className="flex flex-col items-center">
