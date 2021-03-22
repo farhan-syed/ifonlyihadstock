@@ -5,6 +5,7 @@ class Main extends Component {
     state = {
         symbol: '',
         date: '',
+        sDate: '',
         amount: ''
     }
 
@@ -27,7 +28,9 @@ class Main extends Component {
 
     sellDateChange = (date) => {
         let dateString = date.toISOString().substring(0,10);
-        console.log(dateString);
+        this.setState({
+            sDate: dateString
+        })
     }
 
     onSubmit = (e) => {

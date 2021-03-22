@@ -40,7 +40,7 @@ class App extends Component {
   // handle submit button; 1
   onSubmit = async fields => {
     this.setState({fields});
-    const data = await this.dataResponseHandler(fields.symbol, fields.date, fields.amount);
+    const data = await this.dataResponseHandler(fields.symbol, fields.date, fields.sDate, fields.amount);
     this.handleData(data);
   }
 
@@ -50,22 +50,28 @@ class App extends Component {
   }
 
   // call api; 2
-  dataResponseHandler = async(symbol, pDate) => {
+  dataResponseHandler = async(symbol, pDate, sDate) => {
   
     let responseData = {
       quote: {},
       peers: {},
       pData: {},
+      sData: {},
       error: {}
     }
 
-    let iexDateFormat = pDate.replace(/-/g,"");
+    let iexDateFormatPDate = pDate.replace(/-/g,"");
+
+    let iexDateFormatSDate = sDate.replace(/-/g,"");
 
     try {
-        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${iexDateFormat}&chartByDay=true&token=${token}`);
+        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${iexDateFormatPDate}&chartByDay=true&token=${token}`);
+        const response2 = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/chart/${iexDateFormatSDate}?token=${token}`);
+        console.log(response2)
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
+        responseData.sData = response2.data[0];
         responseData.error = {
           "didFail": false, 
           "message": null
@@ -82,6 +88,7 @@ class App extends Component {
 
   // handle data after api call; 3
   handleData = (data) => {
+    console.log(data)
     if (data.error.didFail === true) {
       this.setState({
         showResult: false,
@@ -95,6 +102,8 @@ class App extends Component {
         errorMessage: ` Couldn't fetch ${this.state.fields.symbol} on the chosen date. Please try again.`
       })
     } else {
+
+      // continue here.
 
       const {symbol, companyName, latestPrice} = data.quote;
       const {low: fClose, label: pDateLabel} = data.pData[0];
