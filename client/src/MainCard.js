@@ -25,6 +25,11 @@ class Main extends Component {
         })
     }
 
+    sellDateChange = (date) => {
+        let dateString = date.toISOString().substring(0,10);
+        console.log(dateString);
+    }
+
     onSubmit = (e) => {
         e.preventDefault();
         this.props.onSubmit(this.state);
@@ -55,6 +60,9 @@ class Main extends Component {
                 />
                 <p className="pt-3 text-xs font-semibold leading-normal">Purchase Date</p>
                 <DatePicker onChange={date => this.purchaseDateChange(date)}/>
+
+                <p className="pt-3 text-xs font-semibold leading-normal">Sell Date</p>
+                <DatePicker onChange={date => this.sellDateChange(date)}/>
 
                 <p className="pt-3 text-xs font-semibold leading-normal">Amount Invested</p>
                 <input 
