@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 
-import ResultCard from './ResultCard'
-import ErrorCard from './ErrorCard'
-import RelatedSymbols from './RelatedSymbols'
-import Footer from './Footer'
-import MainCard from './MainCard.js'
-import errorCard from './ErrorCard';
 import Header from './Header';
+import MainCard from './MainCard.js'
+import ResultCard from './ResultCard'
+import RelatedSymbols from './RelatedSymbols'
+import ErrorCard from './ErrorCard'
+import Footer from './Footer'
+
 
 
 const development = false;
@@ -39,8 +39,16 @@ class App extends Component {
 
   // handle submit button; 1
   onSubmit = async fields => {
+    if (fields.symbol == "" || fields.date == "" || fields.sDate == "" || fields.amount == ""){
+      return this.setState({
+        showResult: false,
+        showError: true,
+        errorMessage: "Please fill out all fields."
+      })
+    }
+
     this.setState({fields});
-    const data = await this.dataResponseHandler(fields.symbol, fields.date, fields.amount);
+    const data = await this.dataResponseHandler(fields.symbol, fields.date, fields.sDate, fields.amount);
     this.handleData(data);
   }
 
@@ -50,22 +58,27 @@ class App extends Component {
   }
 
   // call api; 2
-  dataResponseHandler = async(symbol, pDate) => {
+  dataResponseHandler = async(symbol, pDate, sDate) => {
   
     let responseData = {
       quote: {},
       peers: {},
       pData: {},
+      sData: {},
       error: {}
     }
 
-    let iexDateFormat = pDate.replace(/-/g,"");
+    let iexDateFormatPDate = pDate.replace(/-/g,"");
+
+    let iexDateFormatSDate = sDate.replace(/-/g,"");
 
     try {
-        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${iexDateFormat}&chartByDay=true&token=${token}`);
+        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${iexDateFormatPDate}&chartByDay=true&token=${token}`);
+        const response2 = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/chart/${iexDateFormatSDate}?token=${token}`);
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
+        responseData.sData = response2.data;
         responseData.error = {
           "didFail": false, 
           "message": null
@@ -97,20 +110,23 @@ class App extends Component {
     } else {
 
       const {symbol, companyName, latestPrice} = data.quote;
-      const {low: fClose, label: pDateLabel} = data.pData[0];
+      const {low: purchasePrice, label: purchaseDate} = data.pData[0];
+      const {high: sellPrice, label: sellDate} = data.sData[0];
       const amount = parseFloat(this.state.fields.amount);
 
-      const numOfShares = (amount / fClose);
-      const value = (numOfShares * latestPrice);
+      const numOfShares = (amount / purchasePrice);
+      const value = (numOfShares * sellPrice);
       const gain = (value - amount); 
 
       const results = {
         symbol: symbol,
         companyName: companyName,
-        date: pDateLabel,
         amount: amount,
         latestPrice: latestPrice,
-        fClose: fClose,
+        purchasePrice: purchasePrice,
+        purchaseDate: purchaseDate,
+        sellPrice: sellPrice,
+        sellDate: sellDate,
         value: value, 
         gain: gain,
         peers: data.peers
@@ -127,7 +143,6 @@ class App extends Component {
   render() {
     return (
     <div className="App">
-        <body>
             <div className="flex flex-col min-h-screen font-main">
 
                 <div className="flex-none xs:flex-1 text-right">
@@ -146,9 +161,9 @@ class App extends Component {
 
                 <div className="flex-none">
                   <div className="flex flex-col items-center">
-                      {this.state.showError &&
-                        <ErrorCard message={this.state.errorMessage}/>
-                      }
+                    {this.state.showError &&
+                      <ErrorCard message={this.state.errorMessage}/>                    
+                    }
                   </div>
                 </div>
 
@@ -173,7 +188,6 @@ class App extends Component {
                 </div>
 
             </div>
-        </body>
     </div>
 
     );

@@ -3,8 +3,8 @@ import React from 'react';
 const relatedSymbols = (props) => {
     const symbols = props.symbols.slice(0,5);
     const buttons = symbols.map((symbol) => 
-        <div className="flex-1">
-            <button className="w-full h-8 hover:text-white hover:bg-black focus:outline-none" value={symbol} key={symbol} onClick={(e) => props.onSwitch(e.target.value)}>
+        <div className="flex-1" key={symbol}>
+            <button className="w-full h-8 hover:text-white hover:bg-black focus:outline-none font-semibold" value={symbol} key={symbol} onClick={(e) => props.onSwitch(e.target.value)}>
                 {symbol}
             </button>
         </div>
