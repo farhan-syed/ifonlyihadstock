@@ -29,23 +29,23 @@ const result = (props) => {
     return (
     <>
         <div className={`mt-0 w-80 px-6 py-6 bg-white rounded-lg shadow-2xl border-b-8 ${returnGainBorderColor()}`}>
-            <p className="text-center font-medium text-2xl text-black-900">
+            <p className="text-center font-bold text-2xl text-black-900">
                 {props.results.companyName}
             </p>
-            <p className="text-center font-normal text-sm text-black">
+            <p className="text-center font-semibold text-sm text-black">
                 {props.results.symbol} {formatToDollar(props.results.latestPrice)}
             </p>
-            <p className="mt-2 font-medium text-center text-lg">Investment on {props.results.date}</p>
-            <p className="text-center font-normal text-sm">{formatToDollar(props.results.amount)} @ ≈ {formatToDollar(props.results.purchasePrice)}/share</p>
+            <p className="mt-2 font-bold text-center text-lg">Buy on {props.results.date}</p>
+            <p className="text-center font-semibold text-sm">{formatToDollar(props.results.amount)} @ ≈ {formatToDollar(props.results.purchasePrice)}/share</p>
 
-            <p className="mt-2 font-medium text-center text-lg">Sell on {props.results.sellDate}</p>
-            <p className="text-center font-normal text-sm">{`≈ ${formatToDollar(props.results.sellPrice)}/share`}</p>
+            <p className="mt-2 font-bold text-center text-lg">Sell on {props.results.sellDate}</p>
+            <p className="text-center font-semibold text-sm"> ≈ {props.results.sellPrice}/share</p>
 
-            <p className="mt-2 font-medium text-center text-lg">You would be {gainString()}</p>
-            <p className="text-center font-normal text-sm">≈ {formatToDollar(props.results.gain)}</p>
+            <p className="mt-2 font-bold text-center text-lg">You would be {gainString()}</p>
+            <p className="text-center font-semibold text-sm">≈ {formatToDollar(props.results.gain)}</p>
 
-            <p className="mt-2 font-medium text-center text-lg">Today's Value</p>
-            <p className="text-center font-normal text-sm">≈ {formatToDollar(props.results.value)}</p>
+            <p className="mt-2 font-bold text-center text-lg">Today's Value</p>
+            <p className="text-center font-semibold text-sm">≈ {formatToDollar(props.results.value)}</p>
         </div>
         <div className="text-center">
         <a href={`https://twitter.com/intent/tweet?text=If I'd invested ${formatToDollar(props.results.amount)} into ${props.results.symbol} on ${props.results.date}, I'd have ${formatToDollar(props.results.value)}. Find out for yourself:&url=http://ifonlyihadstock.com`} className="mt-7 inline-flex items-center space-x-2 text-black text-sm font-medium">

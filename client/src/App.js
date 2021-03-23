@@ -67,7 +67,6 @@ class App extends Component {
     try {
         const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${iexDateFormatPDate}&chartByDay=true&token=${token}`);
         const response2 = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/chart/${iexDateFormatSDate}?token=${token}`);
-        console.log(response2)
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
