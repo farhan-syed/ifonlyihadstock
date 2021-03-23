@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 
-import ResultCard from './ResultCard'
-import ErrorCard from './ErrorCard'
-import RelatedSymbols from './RelatedSymbols'
-import Footer from './Footer'
-import MainCard from './MainCard.js'
-import errorCard from './ErrorCard';
 import Header from './Header';
+import MainCard from './MainCard.js'
+import ResultCard from './ResultCard'
+import RelatedSymbols from './RelatedSymbols'
+import ErrorCard from './ErrorCard'
+import Footer from './Footer'
+
 
 
 const development = false;
@@ -39,6 +39,14 @@ class App extends Component {
 
   // handle submit button; 1
   onSubmit = async fields => {
+    if (fields.symbol == "" || fields.date == "" || fields.sDate == "" || fields.amount == ""){
+      return this.setState({
+        showResult: false,
+        showError: true,
+        errorMessage: "Please fill out all fields."
+      })
+    }
+
     this.setState({fields});
     const data = await this.dataResponseHandler(fields.symbol, fields.date, fields.sDate, fields.amount);
     this.handleData(data);
@@ -87,7 +95,6 @@ class App extends Component {
 
   // handle data after api call; 3
   handleData = (data) => {
-    console.log(data)
     if (data.error.didFail === true) {
       this.setState({
         showResult: false,
@@ -102,10 +109,8 @@ class App extends Component {
       })
     } else {
 
-      // continue here.
-
       const {symbol, companyName, latestPrice} = data.quote;
-      const {low: purchasePrice, label: pDateLabel} = data.pData[0];
+      const {low: purchasePrice, label: purchaseDate} = data.pData[0];
       const {high: sellPrice, label: sellDate} = data.sData[0];
       const amount = parseFloat(this.state.fields.amount);
 
@@ -116,10 +121,10 @@ class App extends Component {
       const results = {
         symbol: symbol,
         companyName: companyName,
-        date: pDateLabel,
         amount: amount,
         latestPrice: latestPrice,
         purchasePrice: purchasePrice,
+        purchaseDate: purchaseDate,
         sellPrice: sellPrice,
         sellDate: sellDate,
         value: value, 
@@ -152,6 +157,14 @@ class App extends Component {
                             <MainCard onSubmit={fields => this.onSubmit(fields)}/>
                         </div>
                     </div>
+                </div>
+
+                <div className="flex-none">
+                  <div className="flex flex-col items-center">
+                    {this.state.showError &&
+                      <ErrorCard message={this.state.errorMessage}/>                    
+                    }
+                  </div>
                 </div>
 
                 {this.state.showResult &&
