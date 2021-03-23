@@ -71,7 +71,7 @@ class App extends Component {
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
-        responseData.sData = response2.data[0];
+        responseData.sData = response2.data;
         responseData.error = {
           "didFail": false, 
           "message": null
@@ -106,11 +106,12 @@ class App extends Component {
       // continue here.
 
       const {symbol, companyName, latestPrice} = data.quote;
-      const {low: fClose, label: pDateLabel} = data.pData[0];
+      const {low: purchasePrice, label: pDateLabel} = data.pData[0];
+      const {high: sellPrice, label: sellDate} = data.sData[0];
       const amount = parseFloat(this.state.fields.amount);
 
-      const numOfShares = (amount / fClose);
-      const value = (numOfShares * latestPrice);
+      const numOfShares = (amount / purchasePrice);
+      const value = (numOfShares * sellPrice);
       const gain = (value - amount); 
 
       const results = {
@@ -119,7 +120,9 @@ class App extends Component {
         date: pDateLabel,
         amount: amount,
         latestPrice: latestPrice,
-        fClose: fClose,
+        purchasePrice: purchasePrice,
+        sellPrice: sellPrice,
+        sellDate: sellDate,
         value: value, 
         gain: gain,
         peers: data.peers
@@ -136,7 +139,6 @@ class App extends Component {
   render() {
     return (
     <div className="App">
-        <body>
             <div className="flex flex-col min-h-screen font-main">
 
                 <div className="flex-none xs:flex-1 text-right">
@@ -174,7 +176,6 @@ class App extends Component {
                 </div>
 
             </div>
-        </body>
     </div>
 
     );

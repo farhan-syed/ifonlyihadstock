@@ -36,7 +36,10 @@ const result = (props) => {
                 {props.results.symbol} {formatToDollar(props.results.latestPrice)}
             </p>
             <p className="mt-2 font-medium text-center text-lg">Investment on {props.results.date}</p>
-            <p className="text-center font-normal text-sm">{formatToDollar(props.results.amount)} @ ≈ {formatToDollar(props.results.fClose)}/share</p>
+            <p className="text-center font-normal text-sm">{formatToDollar(props.results.amount)} @ ≈ {formatToDollar(props.results.purchasePrice)}/share</p>
+
+            <p className="mt-2 font-medium text-center text-lg">Sell on {props.results.sellDate}</p>
+            <p className="text-center font-normal text-sm">{`≈ ${formatToDollar(props.results.sellPrice)}/share`}</p>
 
             <p className="mt-2 font-medium text-center text-lg">You would be {gainString()}</p>
             <p className="text-center font-normal text-sm">≈ {formatToDollar(props.results.gain)}</p>
