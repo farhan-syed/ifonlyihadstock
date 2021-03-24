@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 
-import Header from './Header';
-import MainCard from './MainCard.js'
-import ResultCard from './ResultCard'
-import RelatedSymbols from './RelatedSymbols'
-import ErrorCard from './ErrorCard'
-import Footer from './Footer'
+import Header from './Components/Header';
+import MainCard from './Components/MainCard.js'
+import ResultCard from './Components/ResultCard'
+import RelatedSymbols from './Components/RelatedSymbols'
+import ErrorCard from './Components/ErrorCard'
+import Footer from './Components/Footer'
 
 
 
@@ -53,12 +53,16 @@ class App extends Component {
   }
 
   switchSymbol = async (symbol) => {
-    const data = await this.dataResponseHandler(symbol, this.state.fields.date, this.state.fields.amount);
+    const data = await this.dataResponseHandler(symbol, this.state.fields.date, this.state.fields.sDate, this.state.fields.amount);
     this.handleData(data);
   }
 
+  returnFormattedDate = (date) => {
+    return date.replace(/-/g,"");
+  }
+
   // call api; 2
-  dataResponseHandler = async(symbol, pDate, sDate) => {
+  dataResponseHandler = async(symbol, pDate, sDate, amount) => {
   
     let responseData = {
       quote: {},
@@ -68,13 +72,9 @@ class App extends Component {
       error: {}
     }
 
-    let iexDateFormatPDate = pDate.replace(/-/g,"");
-
-    let iexDateFormatSDate = sDate.replace(/-/g,"");
-
     try {
-        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${iexDateFormatPDate}&chartByDay=true&token=${token}`);
-        const response2 = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/chart/${iexDateFormatSDate}?token=${token}`);
+        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${this.returnFormattedDate(pDate)}&chartByDay=true&token=${token}`);
+        const response2 = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/chart/date/${this.returnFormattedDate(sDate)}?chartByDay=true&token=${token}`);
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
@@ -142,54 +142,53 @@ class App extends Component {
   
   render() {
     return (
-    <div className="App">
-            <div className="flex flex-col min-h-screen font-main">
+      <div className="App">
+          <div className="flex flex-col min-h-screen font-main">
 
-                <div className="flex-none xs:flex-1 text-right">
-                    <h1 className="mt-4 mr-4 mb-4">
-                        <Header/>
-                    </h1>
-                </div>
+              <div className="flex-none xs:flex-1 text-right">
+                  <h1 className="mt-4 mr-4 mb-4">
+                      <Header/>
+                  </h1>
+              </div>
 
-                <div className="flex-none pt-5 pb-5">
-                    <div className="flex flex-col items-center">
-                        <div className="">
-                            <MainCard onSubmit={fields => this.onSubmit(fields)}/>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex-none">
+              <div className="flex-none pt-5 pb-5">
                   <div className="flex flex-col items-center">
-                    {this.state.showError &&
-                      <ErrorCard message={this.state.errorMessage}/>                    
-                    }
+                      <div className="">
+                          <MainCard onSubmit={fields => this.onSubmit(fields)}/>
+                      </div>
                   </div>
-                </div>
+              </div>
 
-                {this.state.showResult &&
-                <div className="flex-none">
-                    <div className="flex flex-col items-center">
-                        <RelatedSymbols symbols={this.state.results.peers} onSwitch={symbol => this.switchSymbol(symbol)}/>
-                    </div>
-                </div>
-                }
-                {this.state.showResult &&
-                <div className="flex-none pt-5 pb-5">
-                    <div className="flex flex-col items-center">
-                        <div className="">
-                            <ResultCard results={this.state.results}/>
-                        </div>
-                    </div>
-                </div>
-                }
-                <div className="flex-1 h-16">
-                    <Footer/>
-                </div>
+              <div className="flex-none">
+                  <div className="flex flex-col items-center">
+                      {this.state.showError &&
+                      <ErrorCard message={this.state.errorMessage}/>
+                      }
+                  </div>
+              </div>
 
-            </div>
-    </div>
+              {this.state.showResult &&
+              <div className="flex-none">
+                  <div className="flex flex-col items-center">
+                      <RelatedSymbols symbols={this.state.results.peers} onSwitch={symbol => this.switchSymbol(symbol)}/>
+                  </div>
+              </div>
+              }
+                              {this.state.showResult &&
+              <div className="flex-none pt-5 pb-5">
+                  <div className="flex flex-col items-center">
+                      <div className="">
+                          <ResultCard results={this.state.results}/>
+                      </div>
+                  </div>
+              </div>
+              }
+              <div className="flex-1 h-16">
+                  <Footer/>
+              </div>
 
+          </div>
+      </div>
     );
   }
 }
