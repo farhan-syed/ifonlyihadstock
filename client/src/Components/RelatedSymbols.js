@@ -10,9 +10,14 @@ const relatedSymbols = (props) => {
         </div>
     )
     return (
-        <div className="flex w-80 h-auto text-center text-black divide-x divide-black border border-black rounded-sm bg-white shadow-2xl">
-            {buttons}
+        <div className="flex-none">
+            <div className="flex flex-col items-center">
+                <div className="flex w-80 h-auto text-center text-black divide-x divide-black border border-black rounded-sm bg-white shadow-2xl">
+                    {buttons}
+                </div>
+            </div>
         </div>
+
     )
 }
 
