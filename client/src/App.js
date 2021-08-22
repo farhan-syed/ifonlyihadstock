@@ -10,15 +10,15 @@ import Footer from './Components/Footer'
 
 
 
-const development = false;
+const development = true;
 let token = "";
 let URL = "";
 
 if (development === true){
-  token = "Tpk_dd2e3d0b8fb04bec8feb29896fb11f2a";
+  token = process.env.REACT_APP_DEVELOPMENT_KEY;
   URL = "https://sandbox.iexapis.com/stable/"
 } else {
-  token = "pk_701acc729bf74ab59b8cbd56aaa4e526";
+  token = process.env.REACT_APP_PRODUCTION_KEY;
   URL = "https://cloud.iexapis.com/stable/";
 }
 
