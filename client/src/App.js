@@ -10,17 +10,17 @@ import Footer from './Components/Footer'
 
 
 
-const development = false;
-let token = "";
-let URL = "";
+// const development = false;
+// var token = "";
+// var URL = "";
 
-if (development === true){
-  token = process.env.REACT_APP_DEVELOPMENT_KEY;
-  URL = "https://sandbox.iexapis.com/stable/"
-} else {
-  token = process.env.REACT_APP_PRODUCTION_KEY;
-  URL = "https://cloud.iexapis.com/stable/";
-}
+// if (development === true){
+//   token = process.env.REACT_APP_DEVELOPMENT_KEY;
+//   URL = "https://sandbox.iexapis.com/stable/"
+// } else {
+//   token = process.env.REACT_APP_PRODUCTION_KEY;
+//   URL = "https://cloud.iexapis.com/stable/";
+// }
 
 
 // symbol = stock symbol; pDate = purchase date; fClose = fully adjusted close price; amount = amount invested on pDate;
@@ -73,8 +73,8 @@ class App extends Component {
     }
 
     try {
-        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${this.returnFormattedDate(pDate)}&chartByDay=true&token=${token}`);
-        const response2 = await axios.get(`${URL}stock/${symbol}/chart/date/${this.returnFormattedDate(sDate)}?chartByDay=true&token=${token}`);
+        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${this.returnFormattedDate(pDate)}&chartByDay=true&token=${process.env.REACT_APP_PRODUCTION_KEY}`);
+        const response2 = await axios.get(`${URL}stock/${symbol}/chart/date/${this.returnFormattedDate(sDate)}?chartByDay=true&token=${process.env.REACT_APP_PRODUCTION_KEY}`);
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
