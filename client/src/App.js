@@ -73,8 +73,11 @@ class App extends Component {
     }
 
     try {
-        const response = await axios.get(`${URL}stock/${symbol}/batch?types=quote,peers,chart&exactDate=${this.returnFormattedDate(pDate)}&chartByDay=true&token=${process.env.REACT_APP_PRODUCTION_KEY}`);
-        const response2 = await axios.get(`${URL}stock/${symbol}/chart/date/${this.returnFormattedDate(sDate)}?chartByDay=true&token=${process.env.REACT_APP_PRODUCTION_KEY}`);
+
+
+
+        const response = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/batch?types=quote,peers,chart&exactDate=${this.returnFormattedDate(pDate)}&chartByDay=true&token=${process.env.REACT_APP_PRODUCTION_KEY}`);
+        const response2 = await axios.get(`https://cloud.iexapis.com/stable/stock/${symbol}/chart/date/${this.returnFormattedDate(sDate)}?chartByDay=true&token=${process.env.REACT_APP_PRODUCTION_KEY}`);
         responseData.quote = response.data.quote;
         responseData.peers = response.data.peers;
         responseData.pData = response.data.chart;
