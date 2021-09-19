@@ -10,7 +10,7 @@ import Footer from './Components/Footer'
 
 
 
-const development = true;
+const development = false;
 let token = "";
 let URL = "";
 
