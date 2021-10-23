@@ -143,7 +143,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-            <div className="flex flex-col min-h-screen font-main">
+            <div className="flex flex-col min-h-screen font-main dark:bg-dark-menu">
 
                 <Header/>
 
