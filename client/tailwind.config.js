@@ -1,6 +1,6 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}','./public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
       screens:{
@@ -10,7 +10,12 @@ module.exports = {
         main: ['Nunito']
       },
       colors: {
-        'twitter-blue': '#1da1f2'
+        'twitter-blue': '#1da1f2',
+        'dark': '#181818',
+        'dark-menu': '#121212',
+        'dark-hover': '#3D3D3D',
+        'dark-p': '#FFFFFF',
+        'dark-s': '#AAAAAA'
       },
     },
   },
