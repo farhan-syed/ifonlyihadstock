@@ -15,7 +15,8 @@ module.exports = {
         'dark-menu': '#121212',
         'dark-hover': '#3D3D3D',
         'dark-p': '#FFFFFF',
-        'dark-s': '#AAAAAA'
+        'dark-s': '#AAAAAA',
+        'dark-purple': '#673AB7'
       },
     },
   },
